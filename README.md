@@ -31,20 +31,17 @@ The system is evaluated against a Hamilton-Jacobi-Bellman (HJB) stochastic contr
 ## Repository Structure
 
 ```
-├── dynamic_allocation.py          # Main ensemble backtest script
-├── baseline.py                    # HJB baseline backtest
-├── hyperparameter_grid_search.py  # Grid search for RF, LSTM, alpha parameters
-├── ablation_and_benchmark.py      # Ablation study and hard-switch benchmark
-├── confidence_threshold_sensitivity.py  # Sensitivity analysis
-├── sharpe_significance.py         # Jobson-Korkie significance test
-├── regime_diagnostics.py          # Detection lag, false switch, Liberation Day analysis
-├── dashboard.py                   # Streamlit live inference dashboard
-├── models/                        # Serialised trained models
-│   ├── gmm_model.pkl
-│   ├── hmm_model.pkl
-│   ├── rf_model.pkl
-│   └── lstm_model.pt
-├── data/                          # Cached feature data (auto-downloaded if missing)
+├── Models/
+│   ├── baselinemodel.py           # HJB stochastic control baseline
+│   ├── dashboard.py               # Streamlit live inference dashboard
+│   ├── dynamicstratallocation.py  # Full ensemble backtest and dynamic allocation
+│   ├── hybrid.py                  # Ensemble combination, confidence and conflict scoring
+│   ├── loading_data_SP500.py      # Data download and feature engineering pipeline
+│   ├── supervisedmodel.py         # Random Forest and LSTM training and evaluation
+│   ├── unsupervisedmodel.py       # GMM and HMM training and evaluation
+│   ├── lstm_model.pt              # Serialised trained LSTM weights
+│   ├── lstm_input_size.txt        # Input dimension record for model loading
+│   └── regime_models.pkl          # Serialised GMM, HMM and Random Forest models
 └── README.md
 ```
 
@@ -78,7 +75,7 @@ cd Regime-Detection-and-Dynamic-Strategy-Allocation
 ### 3. Launch the dashboard
 
 ```bash
-streamlit run dashboard.py
+streamlit run Models/dashboard.py
 ```
 
 The dashboard will open automatically in your browser at `http://localhost:8501`.
@@ -108,23 +105,23 @@ The dashboard displays:
 To reproduce the full backtest results from the dissertation:
 
 ```bash
-# Run the HJB baseline
-python baseline.py
+# Download data and construct features
+python Models/loading_data_SP500.py
 
-# Run the full ensemble backtest
-python dynamic_allocation.py
+# Train unsupervised models (GMM and HMM)
+python Models/unsupervisedmodel.py
 
-# Run the hyperparameter grid searches (RF, LSTM, alpha)
-python hyperparameter_grid_search.py
+# Train supervised models (Random Forest and LSTM)
+python Models/supervisedmodel.py
 
-# Run the ablation study and hard-switch benchmark
-python ablation_and_benchmark.py
+# Run the hybrid ensemble combination
+python Models/hybrid.py
 
-# Run the sensitivity analysis
-python confidence_threshold_sensitivity.py
+# Run the HJB baseline backtest
+python Models/baselinemodel.py
 
-# Run the Jobson-Korkie significance test
-python sharpe_significance.py
+# Run the full ensemble dynamic allocation backtest
+python Models/dynamicstratallocation.py
 ```
 
 All scripts use `random_state=42` and `torch.manual_seed(42)` for reproducibility.
