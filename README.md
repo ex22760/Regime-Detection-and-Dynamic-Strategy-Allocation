@@ -177,7 +177,7 @@ This project was completed as part of the MEng Engineering Mathematics dissertat
 I would like to sincerely thank my supervisors:
 
 - **Dr Yani Berdeni** (University of Bristol) — for guidance on the mathematical framework, stochastic control formulation, and dissertation structure throughout the project
-- **Dr Nicolas** (University of Exeter) — for support on the machine learning methodology, ensemble design, and practical implementation aspects of the framework
+- **Dr Nicolas Verschueren** (University of Exeter) — for support on the machine learning methodology, ensemble design, and practical implementation aspects of the framework
 
 Their expertise and feedback were invaluable in shaping both the theoretical rigour and empirical robustness of this work.
 
